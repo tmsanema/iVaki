@@ -66,6 +66,7 @@ function App() {
   const [favourites, setFavourites] = useState([]);
   const [showFavourites, setShowFavourites] = useState(false);
   const [currentAudio, setCurrentAudio] = useState(null);
+  const [loadingVoicenote, setLoadingVoicenote] = useState(null);
 
   // Load favourites from localStorage on initial render
   useEffect(() => {
@@ -92,8 +93,19 @@ function App() {
     if (currentAudio) {
       currentAudio.pause();
     }
+    setLoadingVoicenote(voicenote);
     const audio = new Audio(`/Vaki Voicenotes/${voicenote}`);
-    audio.play();
+    
+    audio.addEventListener('canplaythrough', () => {
+      setLoadingVoicenote(null);
+      audio.play();
+    });
+
+    audio.addEventListener('error', () => {
+      setLoadingVoicenote(null);
+      console.error('Error loading audio');
+    });
+
     setCurrentAudio(audio);
   };
 
@@ -101,8 +113,10 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <header className={`App-header ${showFavourites ? 'show-favourites' : ''}`}>
+        <img src="/Vaki Voicenotes/vaki-face.png" alt="Vaki Face" />
         <h1>iVaki</h1>
+        <img src="/Vaki Voicenotes/vaki-face.png" alt="Vaki Face" />
         <button onClick={() => setShowFavourites(!showFavourites)}>
           {showFavourites ? 'Show All' : 'Show Favourites'}
         </button>
@@ -114,7 +128,8 @@ function App() {
               className="voicenote-button"
               onClick={() => playVoicenote(voicenote)}
             >
-              <img src="/Vaki Voicenotes/vaki-face.jpg" alt="Vaki Face" />
+              <img src="/Vaki Voicenotes/button.png" alt="Vaki Face" />
+              <div className={`loading-spinner ${loadingVoicenote === voicenote ? 'visible' : ''}`} />
             </button>
             <div className="voicenote-info">
               <span>{voicenote.replace('.opus', '')}</span>
@@ -128,6 +143,13 @@ function App() {
           </div>
         ))}
       </div>
+      {showFavourites && (
+        <img 
+          src="/Vaki Voicenotes/vaki-dancing.png" 
+          alt="Dancing Vaki" 
+          className="dancing-vaki"
+        />
+      )}
     </div>
   );
 }

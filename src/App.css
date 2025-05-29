@@ -1,43 +1,92 @@
 .App {
   text-align: center;
   padding: 20px;
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  overflow-x: hidden;
 }
 
 .App-header {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  position: relative;
+  height: 200px;
+  padding: 0 20px;
+  margin-top: -50px;
 }
 
 .App-header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
+  font-size: 3.5rem;
+  margin: 0;
+  font-family: 'Comic Sans MS', cursive;
+  text-shadow: 3px 3px 0 #ff6b6b;
+  animation: bounce 2s infinite;
+  z-index: 2;
+  position: relative;
+  flex: 1;
+  text-align: center;
+}
+
+.App-header img {
+  width: 500px;
+  height: 500px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 0 transparent);
+  transition: transform 0.3s ease;
+  z-index: 1;
+  margin: 0 -100px;
 }
 
 .App-header button {
-  padding: 8px 16px;
-  font-size: 1rem;
+  padding: 6px 12px;
+  font-size: 0.9rem;
   cursor: pointer;
-  background-color: #007bff;
+  background-color: #ff6b6b;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 25px;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+  transition: all 0.3s ease;
+  z-index: 2;
+  position: absolute;
+  top: 145px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .App-header button:hover {
-  background-color: #0056b3;
+  background-color: #ff5252;
+  transform: translateX(-50%);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
 }
 
 .voicenotes-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+  padding: 10px;
+  max-width: 1600px;
+  margin: 0 auto;
+  margin-top: -30px;
 }
 
 .voicenote-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 150px;
+  background: none;
+  padding: 5px;
+  transition: transform 0.3s ease;
+  position: relative;
+  height: 180px;
+}
+
+.voicenote-item:hover {
+  transform: translateY(-5px);
 }
 
 .voicenote-button {
@@ -45,24 +94,52 @@
   border: none;
   cursor: pointer;
   padding: 0;
+  position: relative;
+  width: 90px;
+  height: 90px;
+  transition: transform 0.2s ease;
+  margin-bottom: 10px;
+}
+
+.voicenote-button:active {
+  transform: scale(0.95);
 }
 
 .voicenote-button img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 0 transparent);
+  transition: transform 0.3s ease;
+}
+
+.voicenote-button:hover img {
+  transform: scale(1.1);
 }
 
 .voicenote-info {
-  margin-top: 10px;
+  position: relative;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 5px;
+  margin-top: 5px;
 }
 
 .voicenote-info span {
   font-size: 0.9rem;
+  color: #ffffff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  font-family: 'Comic Sans MS', cursive;
+  text-align: center;
+  width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
   margin-bottom: 5px;
 }
 
@@ -70,5 +147,65 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+  padding: 0;
+  line-height: 1;
+  margin-top: 5px;
+}
+
+.favourite-button:hover {
+  transform: scale(1.2);
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  border: 4px solid rgba(255, 107, 107, 0.3);
+  border-top: 4px solid #ff6b6b;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.loading-spinner.visible {
+  opacity: 1;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Dancing Vaki styles */
+.dancing-vaki {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  height: 300px;
+  animation: dance 2s infinite;
+  z-index: 1000;
+  filter: drop-shadow(0 0 20px rgba(255, 107, 107, 0.5));
+}
+
+@keyframes dance {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  25% { transform: rotate(-10deg) translateY(-10px); }
+  75% { transform: rotate(10deg) translateY(10px); }
+}
+
+/* Add new class to hide vaki-face images when favorites are shown */
+.App-header.show-favourites img:not(.dancing-vaki) {
+  display: none;
 } 
