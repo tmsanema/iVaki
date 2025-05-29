@@ -3,6 +3,7 @@ import './App.css';
 
 // List of voicenotes (OPUS files) from the Vaki Voicenotes folder
 const voicenotes = [
+  'Ganja Farm',
   'good to be feel irie.opus',
   'live for faam.opus',
   'It\'s a big days boss.opus',
@@ -94,7 +95,11 @@ function App() {
       currentAudio.pause();
     }
     setLoadingVoicenote(voicenote);
-    const audio = new Audio(`/Vaki Voicenotes/${voicenote}`);
+    
+    // Determine file extension
+    const extension = voicenote.includes('.opus') ? '.opus' : '.mp3';
+    const filename = voicenote.replace('.opus', '').replace('.mp3', '');
+    const audio = new Audio(`/Vaki Voicenotes/${filename}${extension}`);
     
     audio.addEventListener('canplaythrough', () => {
       setLoadingVoicenote(null);
@@ -109,14 +114,28 @@ function App() {
     setCurrentAudio(audio);
   };
 
+  const handleVakiFaceHover = () => {
+    playVoicenote('3rd dimension.mp3');
+  };
+
   const filteredVoicenotes = showFavourites ? favourites : voicenotes;
 
   return (
     <div className="App">
       <header className={`App-header ${showFavourites ? 'show-favourites' : ''}`}>
-        <img src="/Vaki Voicenotes/vaki-face.png" alt="Vaki Face" />
+        <img 
+          src="/Vaki Voicenotes/vaki-face.png" 
+          alt="Vaki Face" 
+          onMouseEnter={handleVakiFaceHover}
+          className="vaki-face"
+        />
         <h1>iVaki</h1>
-        <img src="/Vaki Voicenotes/vaki-face.png" alt="Vaki Face" />
+        <img 
+          src="/Vaki Voicenotes/vaki-face.png" 
+          alt="Vaki Face" 
+          onMouseEnter={handleVakiFaceHover}
+          className="vaki-face"
+        />
         <button onClick={() => setShowFavourites(!showFavourites)}>
           {showFavourites ? 'Show All' : 'Show Favourites'}
         </button>
@@ -132,7 +151,7 @@ function App() {
               <div className={`loading-spinner ${loadingVoicenote === voicenote ? 'visible' : ''}`} />
             </button>
             <div className="voicenote-info">
-              <span>{voicenote.replace('.opus', '')}</span>
+              <span>{voicenote.replace('.opus', '').replace('.mp3', '')}</span>
               <button
                 className="favourite-button"
                 onClick={() => toggleFavourite(voicenote)}
