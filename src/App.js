@@ -117,7 +117,7 @@ function App() {
               <img src="/Vaki Voicenotes/vaki-face.jpg" alt="Vaki Face" />
             </button>
             <div className="voicenote-info">
-              <span>{voicenote}</span>
+              <span>{voicenote.replace('.opus', '')}</span>
               <button
                 className="favourite-button"
                 onClick={() => toggleFavourite(voicenote)}
